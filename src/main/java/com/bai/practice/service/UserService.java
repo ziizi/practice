@@ -1,0 +1,16 @@
+package com.bai.practice.service;
+
+import com.bai.practice.dao.UserMapper;
+import com.bai.practice.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService {
+    @Autowired
+    private UserMapper userMapper;
+
+    public User findUserById(int userid) {
+        return  userMapper.selectById(userid);
+    }
+}
