@@ -1,14 +1,17 @@
 package com.bai.practice.controller;
 
 import com.bai.practice.service.HelloService;
+import com.bai.practice.util.CommunityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.PrintWriter;
 import java.util.*;
 
@@ -133,5 +136,47 @@ public class HelloController {
         map2.put("salary",50000);
         list.add(map2);
         return list;
+    }
+
+
+    // cookie 示例
+    @RequestMapping(path = "/cookie/set" ,method = RequestMethod.GET)
+    @ResponseBody
+    public String setCookie (HttpServletResponse response) {
+        // 生成cookie
+        Cookie cookie = new Cookie("code", CommunityUtil.genUUID());
+        // 设置需要带上cookie的路径
+        cookie.setPath("/practice/class");
+        // 设置生效时间
+        cookie.setMaxAge(60 * 10);
+
+        response.addCookie(cookie);
+        return "set cookie";
+    }
+
+    @RequestMapping (path = "/cookie/get",method = RequestMethod.GET)
+    @ResponseBody
+    public String getCookie (@CookieValue("code") String code) {
+        System.out.println(code);
+        return "get cookie";
+    }
+
+
+    @RequestMapping(path = "/session/set" ,method = RequestMethod.GET)
+    @ResponseBody
+    public String setSession (HttpSession session) {
+        // 生成cookie
+        session.setAttribute("id",1);
+        session.setAttribute("name","test");
+        return "set session";
+    }
+
+    @RequestMapping(path = "/session/get" ,method = RequestMethod.GET)
+    @ResponseBody
+    public String getSession (HttpSession session) {
+        // 生成cookie
+        System.out.println(session.getAttribute("id"));
+        System.out.println(session.getAttribute("name"));
+        return "get session";
     }
 }
