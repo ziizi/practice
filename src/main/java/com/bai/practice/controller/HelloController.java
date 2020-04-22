@@ -179,4 +179,10 @@ public class HelloController {
         System.out.println(session.getAttribute("name"));
         return "get session";
     }
+
+    @RequestMapping(path = "/ajax",method = RequestMethod.POST)
+    @ResponseBody
+    public String testAjax (String name,int age) {
+        return CommunityUtil.getJSONString(0,"操作成功");
+    }
 }
