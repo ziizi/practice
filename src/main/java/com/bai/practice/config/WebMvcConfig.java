@@ -1,9 +1,6 @@
 package com.bai.practice.config;
 
-import com.bai.practice.controller.interceptor.HelloInterceptor;
-import com.bai.practice.controller.interceptor.LoginRequiredInterceptor;
-import com.bai.practice.controller.interceptor.LoginTicketInterceptor;
-import com.bai.practice.controller.interceptor.MessageInterceptor;
+import com.bai.practice.controller.interceptor.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -24,6 +21,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
     private MessageInterceptor messageInterceptor;
 
+    @Autowired
+    private DataInterceptor dataInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(helloInterceptor).excludePathPatterns("/**/*.css","/**/*.png","/**/*.js","/**/*.jpg","/**/*.jpeg")
@@ -35,6 +35,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
        // .addPathPatterns("/user/setting","/user/upload");
 
         registry.addInterceptor(messageInterceptor).excludePathPatterns("/**/*.css","/**/*.png","/**/*.js","/**/*.jpg","/**/*.jpeg");
+
+        registry.addInterceptor(dataInterceptor).excludePathPatterns("/**/*.css","/**/*.png","/**/*.js","/**/*.jpg","/**/*.jpeg");
     }
 
 }

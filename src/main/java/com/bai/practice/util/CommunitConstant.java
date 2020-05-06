@@ -41,7 +41,14 @@ public interface CommunitConstant {
      */
     String TOPIC_FOLLOW = "follow";
 
+
+    // 删除贴子
+    String TOPIC_DELETE = "delete";
+
     String TOPIC_PUBLISH = "publish";
+
+    // 分享
+    String TOPIC_SHARE = "share";
 
     /**
      * 系统的id

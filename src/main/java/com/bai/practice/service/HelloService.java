@@ -6,8 +6,12 @@ import com.bai.practice.dao.UserMapper;
 import com.bai.practice.entity.DiscussPost;
 import com.bai.practice.entity.User;
 import com.bai.practice.util.CommunityUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -25,6 +29,7 @@ import java.util.Date;
 // @Scope("prototype")  // 默认是单例的（singleton）,prototype是多例
 public class HelloService {
 
+    private  static final Logger logger = LoggerFactory.getLogger(HelloService.class);
     @Autowired
     @Qualifier("Hiber")
     private HelloDao helloDao;
@@ -118,5 +123,18 @@ public class HelloService {
                 return "ok";
             }
         });
+    }
+
+    // 改方法在多线程的环境下，异步调用
+    @Async
+    public void execute () {
+        logger.debug("execute");
+    }
+
+
+    // 该方法在启动后自动调用
+    @Scheduled(initialDelay = 1000,fixedRate = 1000)
+    public void execute2 () {
+        logger.debug("execute2");
     }
 }

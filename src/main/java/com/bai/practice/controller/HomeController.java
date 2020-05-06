@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -35,12 +32,14 @@ public class HomeController implements CommunitConstant {
     private LikeService likeService;
 
     @RequestMapping(path = "/index",method = RequestMethod.GET)
-    public String  getIndexPage (Model model, Page page) {
+    public String  getIndexPage (Model model, Page page,
+                                 @RequestParam(name = "orderMode",defaultValue = "0") int orderMode) {
         // 方法调用之前，springmvc 自动实例化参数，并将page注入model
         page.setRows(discussPostService.findDiscussPostRows(0));
-        page.setPath("/index");
+        page.setPath("/index?orderMode="+orderMode);
 
-        List<DiscussPost> list = discussPostService.findDiscussPosts(0,page.getOffset(),page.getLimit());
+        List<DiscussPost> list = discussPostService.findDiscussPosts(
+                0,page.getOffset(),page.getLimit(),orderMode);
         List<Map<String,Object>> discussPost = new ArrayList<Map<String,Object>>();
         if (list != null) {
             for (DiscussPost post : list)  {
@@ -56,6 +55,7 @@ public class HomeController implements CommunitConstant {
         }
 
         model.addAttribute("discussPosts",discussPost);
+        model.addAttribute("orderMode",orderMode);
         System.out.println("数据访问完成");
         return "/index";
     }
@@ -63,5 +63,11 @@ public class HomeController implements CommunitConstant {
     @RequestMapping(path = "/error",method = RequestMethod.GET)
     public String getErrorPage(){
         return "/error/500";
+    }
+
+    // 拒绝访问时提示页面
+    @RequestMapping(path = "/denied", method = RequestMethod.GET)
+    public String getDeniedPage() {
+        return "/error/404";
     }
 }
