@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 有改注解方法必须需要登录
+ * 有该注解方法必须需要登录
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
